@@ -1,0 +1,41 @@
+-- Leader
+vim.g.mapleader = " "
+
+-- Basic
+vim.keymap.set('i', 'jj', '<Esc>') -- Insertdan chiqish
+vim.keymap.set('n', '<leader>w', ':w<CR>') -- Saqlash
+vim.keymap.set('n', '<Esc>', ':nohlsearch<CR>') -- Qidiruv rangini tozalash
+
+-- Neo-Tree
+vim.keymap.set('n', '<leader>e', ':Neotree left toggle reveal<CR>')
+
+-- Navigation (Oynalar orasida sakrash)
+vim.keymap.set('n', '<c-k>', ':wincmd k<CR>')
+vim.keymap.set('n', '<c-j>', ':wincmd j<CR>')
+vim.keymap.set('n', '<c-h>', ':wincmd h<CR>')
+vim.keymap.set('n', '<c-l>', ':wincmd l<CR>')
+
+-- Splits (Oynalarni bo'lish)
+vim.keymap.set('n', '|', ':vsplit<CR>')
+vim.keymap.set('n', '\\', ':split<CR>')
+
+-- Tabs (BufferLine)
+vim.keymap.set('n', '<Tab>', ':BufferLineCycleNext<CR>')
+vim.keymap.set('n', '<s-Tab>', ':BufferLineCyclePrev<CR>')
+vim.keymap.set('n', '<leader>x', ':BufferLinePickClose<CR>')
+vim.keymap.set('n', '<c-x>', ':BufferLineCloseOthers<CR>')
+
+-- Kodni blok holatida surish (Alt+J/K kabi)
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- Indentatsiya (Selectionni saqlab qoladi)
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
+-- Oyna o'lchamlarini o'zgartirish (Ctrl + Arrows)
+vim.keymap.set("n", "<C-Up>", ":resize -2<CR>")
+vim.keymap.set("n", "<C-Down>", ":resize +2<CR>")
+vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>")
+vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>")
+

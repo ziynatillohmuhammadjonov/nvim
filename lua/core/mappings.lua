@@ -46,3 +46,22 @@ vim.keymap.set("n", "<leader>t3", ":3ToggleTerm<CR>", { desc = "Terminal 3" })
 
 -- Hammasini yopish yoki ochish
 vim.keymap.set("n", "<leader>ta", ":ToggleTermToggleAll<CR>", { desc = "Barcha terminallarni ochish/yopish" })
+
+-- Insert rejimida harakatlanish (Ctrl orqali)
+vim.keymap.set("i", "<C-b>", "<Left>", { desc = "Bitta belgi orqaga" })
+vim.keymap.set("i", "<C-f>", "<Right>", { desc = "Bitta belgi oldinga" })
+vim.keymap.set("i", "<C-a>", "<ESC>^i", { desc = "Qator boshiga sakrash" })
+vim.keymap.set("i", "<C-e>", "<End>", { desc = "Qator oxiriga sakrash" })
+
+-- Butun faylni nusxalash (leader + ya)
+vim.keymap.set("n", "<leader>ya", "<cmd>%y<cr>", { desc = "Butun faylni nusxalash" })
+
+-- Nusxalangan qismni yoritish (Highlight on yank)
+vim.api.nvim_create_autocmd("TextYankPost", {
+	callback = function()
+		vim.highlight.on_yank({
+			higroup = "IncSearch",
+			timeout = 200,
+		})
+	end,
+})

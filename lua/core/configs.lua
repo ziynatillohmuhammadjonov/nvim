@@ -79,3 +79,18 @@ vim.diagnostic.config({
 	underline = true,
 	severity_sort = true,
 })
+
+-- Loyiha papkasiga avtomatik o'tish (Rooter mantiqi)
+vim.api.nvim_create_autocmd("BufEnter", {
+	callback = function()
+		local path = vim.fn.expand("%:p:h")
+		if path:match("node_modules") or path:match(".git") then
+			return
+		end
+		-- Agar loyihada .git yoki package.json bo'lsa, o'sha yerga o'tadi
+		local root = vim.fs.find({ ".git", "package.json", "composer.json" }, { upward = true, path = path })[1]
+		if root then
+			vim.fn.chdir(vim.fn.fnamemodify(root, ":h"))
+		end
+	end,
+})

@@ -4,42 +4,36 @@ return {
 		priority = 1000,
 		lazy = false,
 		opts = {
-			picker = {
+			dashboard = {
 				enabled = true,
-				-- Picker UI sozlamalari (ixtiyoriy)
-				layout = {
-					preset = "default", -- yoki "vertical", "select"
+				sections = {
+					{ section = "header" }, -- Standart header (xato bermasligi uchun)
+					{ section = "keys", gap = 1, padding = 1 },
+					{ section = "startup" },
+				},
+				-- O'zbekcha tugmalarni mana shu yerda beramiz
+				preset = {
+					header = [[
+  ______  _____ __     __ _   _         _______  _____  _       _         ____  _    _ 
+ |___  / |_   _|\ \   / /| \ | |    /\  |__   __||_   _|| |     | |       / __ \| |  | |
+    / /    | |   \ \_/ / |  \| |   /  \    | |     | |  | |     | |      | |  | | |__| |
+   / /     | |    \   /  | . ` |  / /\ \   | |     | |  | |     | |      | |  | |  __  |
+  / /__   _| |_    | |   | |\  | / ____ \  | |    _| |_ | |____ | |____  | |__| | |  | |
+ /_____| |_____|   |_|   |_| \_|/_/    \_\ |_|   |_____||______||______|  \____/|_|  |_|
+          ]],
+					keys = {
+						{ icon = " ", key = "f", desc = "Fayl qidirish", action = ":lua Snacks.picker.files()" },
+						{ icon = " ", key = "n", desc = "Yangi fayl", action = ":ene | startinsert" },
+						{ icon = " ", key = "g", desc = "Matn qidirish", action = ":lua Snacks.picker.grep()" },
+						{ icon = " ", key = "r", desc = "Oxirgi fayllar", action = ":lua Snacks.picker.recent()" },
+						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+						{ icon = " ", key = "q", desc = "Chiqish", action = ":qa" },
+					},
 				},
 			},
-			-- Dressing.nvim o'rnini bosuvchi qismlar:
-			input = { enabled = true },
-			select = { enabled = true },
-			-- Bu qator Code Action-larni chiroyli qiladi
-			select = { enabled = true },
-
-			-- Qo'shimcha foydali funksiyalar:
-			notifier = { enabled = true }, -- Xabarlar uchun
-			dashboard = { enabled = true }, -- Bosh sahifa uchun
-			statuscolumn = { enabled = true }, -- Chap tarafdagi raqamlar va belgilar uchun
-			words = { enabled = true }, -- Bir xil so'zlarni yoritish
-		},
-		keys = {
-			-- Masalan, notifications tarixini ko'rish uchun:
-			{
-				"<leader>un",
-				function()
-					Snacks.notifier.show_history()
-				end,
-				desc = "Notification History",
-			},
-			-- Lazygitni ochish:
-			{
-				"<leader>gg",
-				function()
-					Snacks.snacks.lazygit()
-				end,
-				desc = "Lazygit",
-			},
+			-- Boshqa muhim modullar
+			picker = { enabled = true },
+			notifier = { enabled = true },
 		},
 	},
 }

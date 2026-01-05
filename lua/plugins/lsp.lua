@@ -5,6 +5,55 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+			-- --- SERVERLARNI SOZLASH (Yangi uslub) ---
+
+			-- 1. Lua Server
+			vim.lsp.config("lua_ls", {
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						diagnostics = { globals = { "vim" } },
+						workspace = { checkThirdParty = false },
+					},
+				},
+			})
+
+			-- 2. Emmet Server
+			vim.lsp.config("emmet_ls", {
+				capabilities = capabilities,
+				filetypes = {
+					"html",
+					"typescriptreact",
+					"javascriptreact",
+					"css",
+					"sass",
+					"scss",
+					"less",
+					"tsx",
+					"jsx",
+				},
+				init_options = {
+					includeLanguages = {
+						typescriptreact = "html",
+						javascriptreact = "html",
+					},
+				},
+			})
+
+			-- 3. TypeScript/JavaScript
+			vim.lsp.config("ts_ls", {
+				capabilities = capabilities,
+			})
+
+			-- 4. Tailwind CSS
+			vim.lsp.config("tailwindcss", {
+				capabilities = capabilities,
+			})
+
+			-- Serverlarni ishga tushirish (Enable)
+			vim.lsp.enable({ "lua_ls", "emmet_ls", "ts_ls", "tailwindcss" })
+
+			--- AVTOCMD (Sizning mavjud kodlar) ---
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 				callback = function(ev)

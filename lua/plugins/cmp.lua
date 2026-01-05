@@ -5,13 +5,18 @@ return {
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-cmdline",
+		"L3MON4D3/LuaSnip", -- Luasnip bog'liqligini qo'shamiz
+		"saadparwaiz1/cmp_luasnip", -- Cmp va Luasnip-ni bog'lovchi plagin
 	},
 	config = function()
 		local cmp = require("cmp")
+		local luasnip = require("luasnip")
+
 		cmp.setup({
 			snippet = {
 				expand = function(args)
-					vim.fn["vsnip#anonymous"](args.body)
+					-- Vsnip o'rniga Luasnip-ni ishlatamiz
+					luasnip.lsp_expand(args.body)
 				end,
 			},
 			mapping = cmp.mapping.preset.insert({
@@ -20,6 +25,8 @@ return {
 				["<Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
 						cmp.select_next_item()
+					elseif luasnip.expand_or_jumpable() then
+						luasnip.expand_or_jump()
 					else
 						fallback()
 					end
@@ -27,15 +34,16 @@ return {
 				["<S-Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
 						cmp.select_prev_item()
+					elseif luasnip.jumpable(-1) then
+						luasnip.jump(-1)
 					else
 						fallback()
 					end
 				end, { "i", "s" }),
 			}),
-			-- HAMMA SOURCE-LAR BITTA JOYDA BO'LISHI SHART
 			sources = cmp.config.sources({
-				{ name = "nvim_lsp" }, -- Eng asosiysi shu!
-				{ name = "vsnip" },
+				{ name = "nvim_lsp" },
+				{ name = "luasnip" }, -- vsnip o'rniga luasnip
 			}, {
 				{ name = "buffer" },
 				{ name = "path" },

@@ -65,3 +65,37 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		})
 	end,
 })
+vim.keymap.set({ "n", "v" }, "<C-/>", function()
+	local ok, ts_internal = pcall(require, "ts_context_commentstring.internal")
+	if ok then
+		local cs = ts_internal.calculate_commentstring()
+		if cs then
+			vim.bo.commentstring = cs
+		end
+	end
+	return "gc"
+end, { expr = true, remap = true })
+
+-- Normal rejimda qatorni surish
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Qatorni pastga surish" })
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Qatorni yuqoriga surish" })
+
+-- Visual rejimda (blokni surish)
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Blokni pastga surish" })
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Blokni yuqoriga surish" })
+
+-- Insert rejimida (yozayotgan paytda surish)
+vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Qatorni pastga surish" })
+vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Qatorni yuqoriga surish" })
+
+-- Normal rejim (Mac uchun maxsus belgilar bilan)
+vim.keymap.set("n", "∆", ":m .+1<CR>==", { desc = "Qatorni pastga surish" }) -- Option + j
+vim.keymap.set("n", "˚", ":m .-2<CR>==", { desc = "Qatorni yuqoriga surish" }) -- Option + k
+
+-- Visual rejim
+vim.keymap.set("v", "∆", ":m '>+1<CR>gv=gv", { desc = "Blokni pastga surish" })
+vim.keymap.set("v", "˚", ":m '<-2<CR>gv=gv", { desc = "Blokni yuqoriga surish" })
+
+-- Insert rejim
+vim.keymap.set("i", "∆", "<Esc>:m .+1<CR>==gi", { desc = "Qatorni pastga surish" })
+vim.keymap.set("i", "˚", "<Esc>:m .-2<CR>==gi", { desc = "Qatorni yuqoriga surish" })

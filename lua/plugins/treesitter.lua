@@ -2,42 +2,40 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		-- config funksiyasi ichida xatolik chiqmasligi uchun mainni belgilaymiz
-		config = function()
-			-- Ba'zi versiyalarda modul nomi 'nvim-treesitter.configs'
-			-- o'rniga to'g'ridan-to'g'ri 'nvim-treesitter.configs' deb chaqiriladi
-			local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-			if not status_ok then
-				return
+		event = { "BufReadPost", "BufNewFile" },
+		lazy = false,
+		opts = {
+			ensure_installed = {
+				"lua",
+				"vim",
+				"vimdoc",
+				"query",
+				"typescript",
+				"tsx",
+				"javascript",
+				"html",
+				"css",
+			},
+			highlight = {
+				enable = true,
+				additional_vim_regex_highlighting = false,
+			},
+			indent = { enable = true },
+		},
+		config = function(_, opts)
+			-- Eski 'configs' modulini chaqirmasdan to'g'ridan-to'g'ri setup qilamiz
+			-- Agar bu ham xato bersa, shunchaki opts-ni qoldiring
+			local ok, configs = pcall(require, "nvim-treesitter.configs")
+			if ok then
+				configs.setup(opts)
 			end
 
-			configs.setup({
-				ensure_installed = {
-					"lua",
-					"vim",
-					"vimdoc",
-					"query",
-					"typescript",
-					"tsx",
-					"javascript",
-					"php",
-					"html",
-					"css",
-				},
-				sync_install = false,
-				auto_install = true,
-				highlight = {
-					enable = true,
-					additional_vim_regex_highlighting = false,
-				},
-				indent = {
-					enable = true,
-				},
-				-- Ba'zi eski versiyalarda bu modul kerak bo'lishi mumkin
-				context_commentstring = {
-					enable = true,
-					enable_autocmd = false,
-				},
+			-- JSX/TSX uchun majburiy start
+			vim.api.nvim_create_autocmd({ "FileType" }, {
+				pattern = { "typescriptreact", "javascriptreact" },
+				callback = function()
+					vim.treesitter.start()
+				end,
 			})
 		end,
 	},

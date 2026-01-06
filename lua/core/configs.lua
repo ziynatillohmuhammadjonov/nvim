@@ -94,3 +94,5 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		end
 	end,
 })
+
+vim.opt.updatetime = 100 -- Kontekstni tezroq aniqlash uchun

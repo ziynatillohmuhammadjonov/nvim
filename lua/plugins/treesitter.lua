@@ -32,6 +32,11 @@ return {
 				indent = {
 					enable = true,
 				},
+				-- Ba'zi eski versiyalarda bu modul kerak bo'lishi mumkin
+				context_commentstring = {
+					enable = true,
+					enable_autocmd = false,
+				},
 			})
 		end,
 	},

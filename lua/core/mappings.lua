@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 
 -- Basic
-vim.keymap.set("i", "jj", "<Esc>") -- Insertdan chiqish
+vim.keymap.set("i", "jk", "<Esc>") -- Insertdan chiqish
 vim.keymap.set("n", "<leader>w", ":w<CR>") -- Saqlash
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>") -- Qidiruv rangini tozalash
 

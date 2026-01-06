@@ -50,8 +50,17 @@ return {
 				capabilities = capabilities,
 			})
 
-			-- Serverlarni ishga tushirish (Enable)
-			vim.lsp.enable({ "lua_ls", "emmet_ls", "ts_ls", "tailwindcss" })
+			-- 5. ESLint Server (Code Action-lar chiqishi uchun shart)
+			vim.lsp.config("eslint", {
+				capabilities = capabilities,
+				settings = {
+					workingDirectory = { mode = "auto" },
+					format = true,
+				},
+			})
+
+			-- Serverlarni ishga tushirish (ESLint-ni ro'yxatga qo'shing)
+			vim.lsp.enable({ "lua_ls", "emmet_ls", "ts_ls", "tailwindcss", "eslint" })
 
 			--- AVTOCMD (Sizning mavjud kodlar) ---
 			vim.api.nvim_create_autocmd("LspAttach", {

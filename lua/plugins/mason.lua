@@ -27,6 +27,7 @@ return {
 					"css-lsp",
 					"tailwindcss-language-server",
 					"emmet-ls",
+					"eslint-lsp",
 
 					-- Formatters
 					"stylua",
@@ -34,6 +35,7 @@ return {
 					"prettier",
 					--					"pint",
 					"blade-formatter",
+					"eslint_d",
 				},
 			})
 
@@ -54,6 +56,7 @@ return {
 					"html",
 					"cssls",
 					"tailwindcss",
+					"eslint",
 				},
 			})
 		end,

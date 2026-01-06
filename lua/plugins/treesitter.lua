@@ -18,6 +18,7 @@ return {
 					"vimdoc",
 					"query",
 					"typescript",
+					"tsx",
 					"javascript",
 					"php",
 					"html",

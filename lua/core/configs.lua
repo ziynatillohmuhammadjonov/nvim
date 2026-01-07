@@ -96,3 +96,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.opt.updatetime = 100 -- Kontekstni tezroq aniqlash uchun
+
+-- Kodni yig'ish (Folding) sozlamalari
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:treesitter.foldexpr()"
+vim.opt.foldlevel = 99 -- Faylni ochganda hamma narsa ochiq tursin
+vim.opt.foldlevelstart = 99
+vim.opt.foldcolumn = "1" -- Chap tomonda VS Code-dagidek ustun chiqarish

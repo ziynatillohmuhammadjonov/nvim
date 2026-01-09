@@ -82,7 +82,13 @@ return {
 
 				local shells = {}
 				if vim.fn.has("win32") == 1 then
-					shells = { "powershell.exe", "cmd.exe", "bash.exe", "pwsh.exe" }
+					shells = {
+						"powershell.exe",
+						"cmd.exe",
+						"bash.exe",
+						"pwsh.exe",
+						"gitbash.exe --login -i",
+					}
 				else
 					shells = { "zsh", "bash", "sh", "fish" }
 				end

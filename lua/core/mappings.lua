@@ -24,6 +24,7 @@ vim.keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>")
 vim.keymap.set("n", "<s-Tab>", ":BufferLineCyclePrev<CR>")
 vim.keymap.set("n", "<leader>x", ":BufferLinePickClose<CR>")
 vim.keymap.set("n", "<c-x>", ":BufferLineCloseOthers<CR>")
+vim.keymap.set("n", "<leader>q", ":Bdelete<CR>", { noremap = true, silent = true })
 
 -- Kodni blok holatida surish (Alt+J/K kabi)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")

@@ -26,10 +26,6 @@ vim.keymap.set("n", "<leader>x", ":BufferLinePickClose<CR>")
 vim.keymap.set("n", "<c-x>", ":BufferLineCloseOthers<CR>")
 vim.keymap.set("n", "<leader>q", ":Bdelete<CR>", { noremap = true, silent = true })
 
--- Kodni blok holatida surish (Alt+J/K kabi)
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
 -- Indentatsiya (Selectionni saqlab qoladi)
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
@@ -100,3 +96,9 @@ vim.keymap.set("v", "˚", ":m '<-2<CR>gv=gv", { desc = "Blokni yuqoriga surish" 
 -- Insert rejim
 vim.keymap.set("i", "∆", "<Esc>:m .+1<CR>==gi", { desc = "Qatorni pastga surish" })
 vim.keymap.set("i", "˚", "<Esc>:m .-2<CR>==gi", { desc = "Qatorni yuqoriga surish" })
+
+-- Keymaplar (setup ichida yoki tashqarida bo'lishi mumkin)
+vim.keymap.set("n", "]h", "&diff ? ']h' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+vim.keymap.set("n", "[h", "&diff ? '[h' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
+vim.keymap.set("n", "<leader>hr", "<cmd>Gitsigns reset_hunk<CR>", { desc = "O'zgarishni qaytarish (Undo)" })
+vim.keymap.set("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "O'zgarishni ko'rish" })

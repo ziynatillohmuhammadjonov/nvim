@@ -47,103 +47,94 @@
 -- 	},
 -- }
 return {
-	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		config = function()
-			local tt = require("toggleterm")
+	"akinsho/toggleterm.nvim",
+	version = "*",
+	dependencies = { "nvim-telescope/telescope.nvim" }, -- Telescope bog'liqligini ko'rsatamiz
+	config = function()
+		local tt = require("toggleterm")
 
-			tt.setup({
-				size = 15,
-				direction = "horizontal",
-				open_mapping = [[<c-\>]],
-				-- Terminal ochilganda avtomatik yozish rejimiga o'tish
-				start_in_insert = true,
-				insert_mappings = true,
-				terminal_mappings = true,
-				persist_size = true,
-				close_on_exit = true,
-			})
+		-- 1. Asosiy sozlamalar (Plagin miyasi)
+		tt.setup({
+			size = 15,
+			direction = "horizontal",
+			open_mapping = [[<c-\>]],
+			start_in_insert = true,
+			insert_mappings = true,
+			terminal_mappings = true,
+			persist_size = true,
+			close_on_exit = true,
+		})
 
-			-- 1. Shell tanlash funksiyasi
-			local function select_terminal_shell()
-				-- Telescope yuklanganini tekshirish
-				local status_ok, _ = pcall(require, "telescope")
-				if not status_ok then
-					vim.notify("Telescope o'rnatilmagan!", vim.log.levels.ERROR)
-					return
-				end
+		-- 2. Tizimni aniqlash
+		local os_name = vim.loop.os_uname().sysname
+		local shell_list = {}
 
-				local pickers = require("telescope.pickers")
-				local finders = require("telescope.finders")
-				local conf = require("telescope.config").values
-				local actions = require("telescope.actions")
-				local action_state = require("telescope.actions.state")
+		if os_name == "Windows_NT" then
+			shell_list = {
+				{ name = "Git Bash", cmd = [["C:/Program Files/Git/bin/bash.exe"]], args = { "--login", "-i" } },
+				{ name = "PowerShell", cmd = "powershell.exe", args = {} },
+				{ name = "Command Prompt", cmd = "cmd.exe", args = {} },
+			}
+		elseif os_name == "Darwin" then
+			shell_list = {
+				{ name = "Zsh (Default)", cmd = "zsh", args = { "--login" } },
+				{ name = "Fish", cmd = "fish", args = {} },
+			}
+		else
+			shell_list = {
+				{ name = "Bash (Default)", cmd = "bash", args = {} },
+				{ name = "Zsh", cmd = "zsh", args = {} },
+			}
+		end
 
-				local shells = {}
-				if vim.fn.has("win32") == 1 then
-					shells = {
-						"powershell.exe",
-						"cmd.exe",
-						"bash.exe",
-						"pwsh.exe",
-						"gitbash.exe --login -i",
-					}
-				else
-					shells = { "zsh", "bash", "sh", "fish" }
-				end
+		-- 3. Shell tanlash funksiyasi
+		local function select_terminal_shell()
+			local actions = require("telescope.actions")
+			local action_state = require("telescope.actions.state")
 
-				pickers
-					.new({}, {
-						prompt_title = "Terminal Shell-ni tanlang",
-						finder = finders.new_table({ results = shells }),
-						sorter = conf.generic_sorter({}),
-						attach_mappings = function(prompt_bufnr, _)
-							actions.select_default:replace(function()
-								actions.close(prompt_bufnr)
-								local selection = action_state.get_selected_entry()
-								-- Tanlangan shell bilan yangi terminalni ochish
-								-- Bu yerda biz yangi terminal obyektini yaratib, uni ochamiz
-								require("toggleterm.terminal").Terminal
-									:new({
-										cmd = selection[1],
-										hidden = false,
-										direction = "horizontal",
-									})
-									:toggle()
-							end)
-							return true
+			require("telescope.pickers")
+				.new({}, {
+					prompt_title = "Terminal Tanlang (" .. os_name .. ")",
+					finder = require("telescope.finders").new_table({
+						results = shell_list,
+						entry_maker = function(entry)
+							return { value = entry, display = entry.name, ordinal = entry.name }
 						end,
-					})
-					:find()
-			end
+					}),
+					sorter = require("telescope.config").values.generic_sorter({}),
+					attach_mappings = function(prompt_bufnr, _)
+						actions.select_default:replace(function()
+							actions.close(prompt_bufnr)
+							local data = action_state.get_selected_entry().value
+							require("toggleterm.terminal").Terminal
+								:new({
+									cmd = data.cmd,
+									args = data.args,
+									shell = os_name == "Windows_NT" and data.cmd or nil, -- Windows fix
+									direction = "horizontal",
+								})
+								:toggle()
+						end)
+						return true
+					end,
+				})
+				:find()
+		end
 
-			-- 2. KEYMAPLAR
-			-- Shell tanlash
-			vim.keymap.set("n", "<leader>ts", select_terminal_shell, { desc = "Shell tanlash" })
-			-- Standart toggle (oxirgi ishlatilganini ochadi)
-			vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<cr>", { desc = "Terminal Toggle" })
+		-- 4. Keymaplar (Lider tugmalar)
+		vim.keymap.set("n", "<leader>ts", select_terminal_shell, { desc = "Terminal: Shell tanlash" })
+		vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<cr>", { desc = "Terminal: Toggle" })
 
-			-- 3. TERMINAL ICHIDAGI SOZLAMALAR
-			function _G.set_terminal_keymaps()
-				local opts = { buffer = 0 }
-				-- Rejimlar orasida o'tish
-				vim.keymap.set("t", "jj", [[<C-\><C-n>]], opts)
-				vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+		-- 5. Terminal rejimi uchun maxsus tugmalar
+		function _G.set_terminal_keymaps()
+			local opts = { buffer = 0 }
+			vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts) -- Terminaldan chiqish
+			vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+			vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+			vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+			vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+		end
 
-				-- Navigatsiya
-				vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
-				vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
-				vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
-				vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-
-				-- Berkitish va O'chirish
-				vim.keymap.set("t", "<C-q>", [[<C-\><C-n><Cmd>ToggleTerm<CR>]], opts)
-				vim.keymap.set("t", "<C-x>", [[<C-\><C-n><Cmd>bdelete!<CR>]], opts)
-			end
-
-			-- Terminal ochilganda keymaplarni faollashtirish
-			vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-		end,
-	},
+		vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+	end,
 }

@@ -52,3 +52,18 @@ if status_ok then
 		return get_option(ft, option)
 	end
 end
+
+if vim.fn.has("win32") == 1 then
+	-- Yo'lni qo'shtirnoq ichida yozamiz
+	local bash_path = '"C:/Program Files/Git/bin/bash.exe"'
+
+	-- Tekshirishda qo'shtirnoqsiz yo'ldan foydalanamiz
+	if vim.fn.executable("C:/Program Files/Git/bin/bash.exe") == 1 then
+		vim.opt.shell = bash_path
+		vim.opt.shellcmdflag = "-c"
+		vim.opt.shellredir = ">%s 2>&1"
+		vim.opt.shellpipe = "| tee"
+		vim.opt.shellquote = ""
+		vim.opt.shellxquote = ""
+	end
+end

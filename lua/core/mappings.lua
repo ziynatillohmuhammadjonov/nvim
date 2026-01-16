@@ -2,9 +2,24 @@
 vim.g.mapleader = " "
 
 -- Basic
-vim.keymap.set("i", "jk", "<Esc>") -- Insertdan chiqish
-vim.keymap.set("n", "<leader>w", ":w<CR>") -- Saqlash
-vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>") -- Qidiruv rangini tozalash
+-- jk orqali hamma rejimdan chiqish (Normal rejimga o'tish)
+vim.keymap.set({ "i", "v", "x", "t" }, "jk", "<C-><C-n>") -- 't' terminal uchun ham ishlaydi
+vim.keymap.set("n", "jk", "<Esc>") -- Normal rejimda shunchaki Esc
+
+-- Saqlash va qidiruvni tozalash
+vim.keymap.set("n", "<leader>w", ":w<CR>")
+
+-- Insert rejimidan chiqish va qidiruv rangini tozalash
+vim.keymap.set("i", "jk", "<Esc>:nohlsearch<CR>", { silent = true })
+
+-- Visual rejimidan chiqish va qidiruv rangini tozalash
+vim.keymap.set("v", "jk", "<Esc>:nohlsearch<CR>", { silent = true })
+
+-- Normal rejimda ham jk bosilsa qidiruvni tozalaydi
+vim.keymap.set("n", "jk", ":nohlsearch<CR>", { silent = true })
+
+-- Agar fayl juda kichik oynada ochilib qolsa, ushbu buyruqni ishlating:
+vim.keymap.set("n", "<leader>z", ":only<CR>") -- Joriy oynani butun ekranga yoyish
 
 -- Neo-Tree
 vim.keymap.set("n", "<leader>e", ":Neotree left toggle reveal<CR>")

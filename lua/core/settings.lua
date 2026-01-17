@@ -53,17 +53,30 @@ if status_ok then
 	end
 end
 
-if vim.fn.has("win32") == 1 then
-	-- Yo'lni qo'shtirnoq ichida yozamiz
-	local bash_path = '"C:/Program Files/Git/bin/bash.exe"'
+-- if vim.fn.has("win32") == 1 then
+-- 	-- Yo'lni qo'shtirnoq ichida yozamiz
+-- 	local bash_path = '"C:/Program Files/Git/bin/bash.exe"'
+--
+-- 	-- Tekshirishda qo'shtirnoqsiz yo'ldan foydalanamiz
+-- 	if vim.fn.executable("C:/Program Files/Git/bin/bash.exe") == 1 then
+-- 		vim.opt.shell = bash_path
+-- 		vim.opt.shellcmdflag = "-c"
+-- 		vim.opt.shellredir = ">%s 2>&1"
+-- 		vim.opt.shellpipe = "| tee"
+-- 		vim.opt.shellquote = ""
+-- 		vim.opt.shellxquote = ""
+-- 	end
+-- end
 
-	-- Tekshirishda qo'shtirnoqsiz yo'ldan foydalanamiz
-	if vim.fn.executable("C:/Program Files/Git/bin/bash.exe") == 1 then
-		vim.opt.shell = bash_path
-		vim.opt.shellcmdflag = "-c"
-		vim.opt.shellredir = ">%s 2>&1"
-		vim.opt.shellpipe = "| tee"
-		vim.opt.shellquote = ""
-		vim.opt.shellxquote = ""
-	end
+if vim.fn.has("win32") == 1 then
+	-- Agar pwsh (PowerShell 7) bo'lsa uni, bo'lmasa standart powershell-ni tanlaydi
+	local shell_cmd = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
+
+	vim.opt.shell = shell_cmd
+	vim.opt.shellcmdflag =
+		"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+	vim.opt.shellquote = ""
+	vim.opt.shellxquote = ""
+	vim.opt.shellredir = "2>&1 | Out-File -Encoding UTF8 %s"
+	vim.opt.shellpipe = "|"
 end

@@ -103,3 +103,8 @@ vim.opt.foldexpr = "v:treesitter.foldexpr()"
 vim.opt.foldlevel = 99 -- Faylni ochganda hamma narsa ochiq tursin
 vim.opt.foldlevelstart = 99
 vim.opt.foldcolumn = "1" -- Chap tomonda VS Code-dagidek ustun chiqarish
+
+-- Windowsda Git Bash (bash.exe) ishlatsangiz yo'llarni to'g'ri o'qishi uchun
+if vim.fn.has("win32") == 1 then
+	vim.opt.shellslash = true
+end

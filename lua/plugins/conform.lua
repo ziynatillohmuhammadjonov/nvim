@@ -16,9 +16,16 @@ return {
 				php = { "pint", "php_cs_fixer", stop_after_first = true },
 				blade = { "blade-formatter" },
 			},
-			-- FORMAT ON SAVE:
+			formatters = {
+				prettier = {
+					-- Windowsda node_modules ichidagi prettierni topishni osonlashtiramiz
+					command = "prettier",
+					-- Fayl yo'lini qavslari bilan birga PowerShell orqali xatosiz uzatadi
+					args = { "--stdin-filepath", "$FILENAME" },
+				},
+			},
 			format_on_save = {
-				timeout_ms = 1000, -- 3 soniya yetarli
+				timeout_ms = 3000, -- Windowsda Prettier biroz sekinroq ishlashi mumkin
 				lsp_format = "fallback",
 			},
 		},

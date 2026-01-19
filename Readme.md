@@ -12,10 +12,13 @@ theme = tokyonight
 # Oyna sozlamalari
 window-padding-x = 10
 window-padding-y = 10
-window-background-opacity = 0.95
-window-background-blur = true
+# Fon shaffofligi (0.0 dan 1.0 gacha)
+background-opacity = 0.95
 
+# Fonni xiralashtirish (macOS-da ishlaydi)
+background-blur = true
 # Kursorni sozlash
+
 cursor-style = block
 shell-integration = zsh
 

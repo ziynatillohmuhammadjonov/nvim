@@ -52,6 +52,10 @@ return {
 	dependencies = { "nvim-telescope/telescope.nvim" },
 	config = function()
 		local tt = require("toggleterm")
+		local os_name = vim.loop.os_uname().sysname
+
+		-- MacOS uchun 'zsh', Windows uchun 'powershell.exe'
+		local default_shell = os_name == "Windows_NT" and "powershell.exe" or "zsh"
 
 		tt.setup({
 			size = 15,
@@ -60,7 +64,7 @@ return {
 			start_in_insert = true,
 			persist_size = true,
 			close_on_exit = false, -- Debug tugaguncha false tursin
-			shell = "powershell.exe", -- Asosiy shell PowerShell bo'lib turaversin
+			shell = default_shell, -- DINAMIK SHEL
 		})
 
 		local os_name = vim.loop.os_uname().sysname

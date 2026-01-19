@@ -49,52 +49,45 @@
 return {
 	"akinsho/toggleterm.nvim",
 	version = "*",
-	dependencies = { "nvim-telescope/telescope.nvim" }, -- Telescope bog'liqligini ko'rsatamiz
+	dependencies = { "nvim-telescope/telescope.nvim" },
 	config = function()
 		local tt = require("toggleterm")
 
-		-- 1. Asosiy sozlamalar (Plagin miyasi)
 		tt.setup({
 			size = 15,
 			direction = "horizontal",
 			open_mapping = [[<c-\>]],
 			start_in_insert = true,
-			insert_mappings = true,
-			terminal_mappings = true,
 			persist_size = true,
-			close_on_exit = true,
+			close_on_exit = false, -- Debug tugaguncha false tursin
+			shell = "powershell.exe", -- Asosiy shell PowerShell bo'lib turaversin
 		})
 
-		-- 2. Tizimni aniqlash
 		local os_name = vim.loop.os_uname().sysname
 		local shell_list = {}
 
 		if os_name == "Windows_NT" then
 			shell_list = {
-				{ name = "Git Bash", cmd = [["C:/Program Files/Git/bin/bash.exe"]], args = { "--login", "-i" } },
+				-- DIQQAT: cmd qismini bitta qilib yozamiz, args bo'sh bo'ladi
+				{ name = "Git Bash", cmd = [[& "C:/Program Files/Git/bin/bash.exe" --login -i]], args = {} },
 				{ name = "PowerShell", cmd = "powershell.exe", args = {} },
 				{ name = "Command Prompt", cmd = "cmd.exe", args = {} },
 			}
-		elseif os_name == "Darwin" then
-			shell_list = {
-				{ name = "Zsh (Default)", cmd = "zsh", args = { "--login" } },
-				{ name = "Fish", cmd = "fish", args = {} },
-			}
 		else
+			-- Linux/MacOS uchun eski holicha qoladi
 			shell_list = {
-				{ name = "Bash (Default)", cmd = "bash", args = {} },
-				{ name = "Zsh", cmd = "zsh", args = {} },
+				{ name = "Zsh", cmd = "zsh", args = { "--login" } },
+				{ name = "Bash", cmd = "bash", args = {} },
 			}
 		end
 
-		-- 3. Shell tanlash funksiyasi
 		local function select_terminal_shell()
 			local actions = require("telescope.actions")
 			local action_state = require("telescope.actions.state")
 
 			require("telescope.pickers")
 				.new({}, {
-					prompt_title = "Terminal Tanlang (" .. os_name .. ")",
+					prompt_title = "Terminal Tanlang",
 					finder = require("telescope.finders").new_table({
 						results = shell_list,
 						entry_maker = function(entry)
@@ -106,11 +99,14 @@ return {
 						actions.select_default:replace(function()
 							actions.close(prompt_bufnr)
 							local data = action_state.get_selected_entry().value
+
+							-- Windows uchun maxsus mantiq:
+							-- Biz cmd ichida hamma narsani berganimiz uchun ToggleTerm uni PowerShell
+							-- ichida string sifatida bajarishi kerak.
 							require("toggleterm.terminal").Terminal
 								:new({
 									cmd = data.cmd,
-									args = data.args,
-									shell = os_name == "Windows_NT" and data.cmd or nil, -- Windows fix
+									hidden = true,
 									direction = "horizontal",
 								})
 								:toggle()
@@ -121,11 +117,9 @@ return {
 				:find()
 		end
 
-		-- 4. Keymaplar (Lider tugmalar)
 		vim.keymap.set("n", "<leader>ts", select_terminal_shell, { desc = "Terminal: Shell tanlash" })
 		vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<cr>", { desc = "Terminal: Toggle" })
 
-		-- 5. Terminal rejimi uchun maxsus tugmalar
 		function _G.set_terminal_keymaps()
 			local opts = { buffer = 0 }
 			vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts) -- Terminaldan chiqish

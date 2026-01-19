@@ -108,3 +108,12 @@ vim.opt.foldcolumn = "1" -- Chap tomonda VS Code-dagidek ustun chiqarish
 if vim.fn.has("win32") == 1 then
 	vim.opt.shellslash = true
 end
+
+-- init.lua ichiga qo'shish uchun:
+vim.api.nvim_create_autocmd("VimLeave", {
+	callback = function()
+		if vim.fn.has("win32") == 1 then
+			os.execute("taskkill /f /im node.exe /t")
+		end
+	end,
+})

@@ -28,6 +28,7 @@ return {
 					"tailwindcss-language-server",
 					"emmet-ls",
 					"eslint-lsp",
+          "json-lsp",
 
 					-- Formatters
 					"stylua",

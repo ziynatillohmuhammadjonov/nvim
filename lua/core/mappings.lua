@@ -117,3 +117,16 @@ vim.keymap.set("n", "]h", "&diff ? ']h' : '<cmd>Gitsigns next_hunk<CR>'", { expr
 vim.keymap.set("n", "[h", "&diff ? '[h' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
 vim.keymap.set("n", "<leader>hr", "<cmd>Gitsigns reset_hunk<CR>", { desc = "O'zgarishni qaytarish (Undo)" })
 vim.keymap.set("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "O'zgarishni ko'rish" })
+
+-- Oxirgi fayllar (Recent files) uchun
+-- vim.keymap.set("n", "<leader>fr", function()
+-- 	require("telescope.builtin").oldfiles({ only_cwd = true })
+-- end, { desc = "Recent files (Current Project)" })
+vim.keymap.set("n", "<leader>fr", function()
+	Snacks.picker.recent({ filter = { cwd = true } })
+end, { desc = "Recent files (Current Project)" })
+
+-- Faqat ochiq turgan bufferlar orasidan qidirish
+vim.keymap.set("n", "<leader>fb", function()
+	Snacks.picker.buffers()
+end, { desc = "Active Buffers" })

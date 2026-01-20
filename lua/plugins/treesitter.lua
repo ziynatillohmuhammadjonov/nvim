@@ -28,6 +28,8 @@ return {
 					"css",
 					"php",
 					"php_only", -- PHP uchun parserlar
+					"json",
+					"jsonc",
 				},
 				highlight = {
 					enable = true,
@@ -52,6 +54,21 @@ return {
 					pcall(vim.treesitter.start, args.buf, lang)
 				end,
 			})
+		end,
+	},
+	-- 2. Sticky Scroll (Context) plagini
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		event = "BufReadPre",
+		config = function()
+			require("treesitter-context").setup({
+				enable = true,
+				max_lines = 5, -- JSON obyektlari chuqur bo'lgani uchun 5 qiling
+				mode = "cursor",
+			})
+
+			-- JSON obyektlari ota-onasini ko'rsatish uchun rang
+			vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#31353f" })
 		end,
 	},
 }

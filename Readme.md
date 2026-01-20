@@ -28,7 +28,7 @@ unfocused-split-opacity = 0.7
 
 Windows terminal setup
 Recomenndet alacrity terminal
-setup C:\Users\User\AppData\Locale\alacrity\alacrity.toml
+setup C:\Users\User\AppData\Roaming\alacritty\alacritty.toml
 
 # Alacritty Configuration
 
@@ -81,7 +81,7 @@ white =   "#acb0d0"
 # Neovimda ranglar to'g'ri chiqishi uchun (TrueColor)
 TERM = "xterm-256color"
 
-[terminal.shell]
+# [terminal.shell]
 # Windowsda standart terminal sifatida Git Bashni tanlash (Manzilni tekshiring)
-program = "C:\\Program Files\\Git\\bin\\bash.exe"
-args = ["--login", "-i"]
+# program = "C:\\Program Files\\Git\\bin\\bash.exe"
+# args = ["--login", "-i"]

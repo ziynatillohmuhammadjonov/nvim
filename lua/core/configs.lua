@@ -117,3 +117,12 @@ vim.api.nvim_create_autocmd("VimLeave", {
 		end
 	end,
 })
+
+-- Set the background of the main editor and floating windows to none (transparent)
+vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
+vim.cmd("highlight NonText guibg=NONE ctermbg=NONE")
+
+-- init.lua faylingizning oxiriga
+vim.defer_fn(function()
+	vim.cmd("colorscheme gruvbox")
+end, 100)

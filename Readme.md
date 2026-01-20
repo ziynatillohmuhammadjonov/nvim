@@ -32,6 +32,14 @@ setup C:\Users\User\AppData\Roaming\alacritty\alacritty.toml
 
 # Alacritty Configuration
 
+
+# Terminal ochiladigan boshlang'ich papka
+# Eslatma: Windowsda slashelarni "/" ko'rinishida yozish xavfsizroq
+general.working_directory = "D:/"
+
+# Agar ma'lum bir loyiha papkasida ochilmoqchi bo'lsangiz:
+# general.working_directory = "D:/findwork/findwork-client"
+
 [window]
 # Oynani biroz shaffof qilish (nvim chiroyli ko'rinishi uchun)
 opacity = 0.95

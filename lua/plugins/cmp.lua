@@ -42,11 +42,16 @@ return {
 				end, { "i", "s" }),
 			}),
 			sources = cmp.config.sources({
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" }, -- vsnip o'rniga luasnip
+				{
+					name = "nvim_lsp",
+					priority = 1000,
+					-- Tailwind klasslari 1 ta harfdan keyin ham chiqishi uchun:
+					keyword_length = 1,
+				},
+				{ name = "luasnip", priority = 750 },
 			}, {
-				{ name = "buffer" },
-				{ name = "path" },
+				{ name = "buffer", priority = 500 },
+				{ name = "path", priority = 250 },
 			}),
 		})
 	end,

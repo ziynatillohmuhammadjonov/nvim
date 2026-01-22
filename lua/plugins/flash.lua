@@ -2,7 +2,15 @@ return {
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			modes = {
+				char = {
+					-- f, F, t, T tugmalari bosilganda flash ishga tushmasligi uchun
+					-- uni o'chirib qo'yamiz
+					enabled = false,
+				},
+			},
+		},
 		keys = {
 			{
 				"s",

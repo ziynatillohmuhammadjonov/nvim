@@ -2,28 +2,42 @@ Macos linux terminal setup
 Recomenndet terminal - ghostty
 setting .config/ghostty/config
 
-# Shrift sozlamalari
+# --- Shrift sozlamalari ---
 font-family = "JetBrainsMono Nerd Font"
 font-size = 13
+font-feature = ["calt", "liga", "dlig"] # Ligaturalarni yoqish (masalan, -> o'rniga chiroyli ko'rsatadi)
 
-# Ranglar mavzusi (Ghostty-da ko'plab ichki mavzular bor)
-theme = tokyonight
+# --- Ranglar mavzusi ---
+theme = "tokyonight"
 
-# Oyna sozlamalari
+# --- Oyna sozlamalari ---
 window-padding-x = 10
 window-padding-y = 10
-# Fon shaffofligi (0.0 dan 1.0 gacha)
+window-decoration = true  # Sarlavha satrini ko'rsatish/yashirish
 background-opacity = 0.95
+background-blur = true    # macOS-da juda chiroyli effekt beradi
 
-# Fonni xiralashtirish (macOS-da ishlaydi)
-background-blur = true
-# Kursorni sozlash
+# --- Fullscreen va Oyna holati ---
+# Agar har doim butun ekranda ochilmoqchi bo'lsangiz:
+# initial-window-state = "fullscreen"
 
-cursor-style = block
-shell-integration = zsh
+# --- Kursor va interfeys ---
+cursor-style = "block"
+cursor-blink = true
+shell-integration = "zsh"
 
-# GPU va renderlashni optimallashtirish
+# --- Split-screen (Ekran bo'lish) ---
 unfocused-split-opacity = 0.7
+
+# --- GPU va unumdorlik ---
+fps-limit = 144  # Monitoringiz gersiga qarab (masalan, 60 yoki 120)
+
+# --- Klaviatura kombinatsiyalari ---
+# F11 bosilganda Fullscreen qilish (Huddi Alacritty kabi)
+keybind = f11=toggle_fullscreen
+# Command+Enter (macOS) yoki Alt+Enter (Linux) orqali ham qilish mumkin
+keybind = super+enter=toggle_fullscreen
+
 
 
 Windows terminal setup
@@ -43,6 +57,8 @@ general.working_directory = "D:/"
 [window]
 # Oynani biroz shaffof qilish (nvim chiroyli ko'rinishi uchun)
 opacity = 0.95
+startup_mode = "Fullscreen" # Yoki "Maximized" qilsangiz tepadagi panel ko'rinib turadi
+
 # Oynaning chetidagi ramkalarni sozlash
 padding = { x = 10, y = 10 }
 # Sarlavha satrini olib tashlash (minimalizm uchun 'None', bo'lmasa 'Full')
@@ -88,6 +104,10 @@ white =   "#acb0d0"
 [env]
 # Neovimda ranglar to'g'ri chiqishi uchun (TrueColor)
 TERM = "xterm-256color"
+
+[[keyboard.bindings]]
+key = "F11"
+action = "ToggleFullscreen"
 
 # [terminal.shell]
 # Windowsda standart terminal sifatida Git Bashni tanlash (Manzilni tekshiring)

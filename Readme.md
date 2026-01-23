@@ -101,6 +101,10 @@ magenta = "#bb9af7"
 cyan =    "#0db9d7"
 white =   "#acb0d0"
 
+[cursor]
+style = "Block"
+blink_interval = 500
+
 [env]
 # Neovimda ranglar to'g'ri chiqishi uchun (TrueColor)
 TERM = "xterm-256color"

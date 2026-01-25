@@ -2,35 +2,29 @@ Macos linux terminal setup
 Recomenndet terminal - ghostty
 setting .config/ghostty/config
 
-# --- Shrift sozlamalari ---
+
+# Shrift sozlamalari
 font-family = "JetBrainsMono Nerd Font"
-font-size = 13
-font-feature = ["calt", "liga", "dlig"] # Ligaturalarni yoqish (masalan, -> o'rniga chiroyli ko'rsatadi)
+font-size = 14
 
-# --- Ranglar mavzusi ---
-theme = "tokyonight"
+# Ranglar mavzusi (Ghostty-da ko'plab ichki mavzular bor)
+theme = tokyonight
 
-# --- Oyna sozlamalari ---
+# Oyna sozlamalari
 window-padding-x = 10
 window-padding-y = 10
-window-decoration = true  # Sarlavha satrini ko'rsatish/yashirish
-background-opacity = 0.95
-background-blur = true    # macOS-da juda chiroyli effekt beradi
+# Fon shaffofligi (0.0 dan 1.0 gacha)
+background-opacity = 0.97
 
-# --- Fullscreen va Oyna holati ---
-# Agar har doim butun ekranda ochilmoqchi bo'lsangiz:
-# initial-window-state = "fullscreen"
+# Fonni xiralashtirish (macOS-da ishlaydi)
+background-blur = true
+# Kursorni sozlash
 
-# --- Kursor va interfeys ---
-cursor-style = "block"
-cursor-blink = true
-shell-integration = "zsh"
+cursor-style = block
+shell-integration = zsh
 
-# --- Split-screen (Ekran bo'lish) ---
+# GPU va renderlashni optimallashtirish
 unfocused-split-opacity = 0.7
-
-# --- GPU va unumdorlik ---
-fps-limit = 144  # Monitoringiz gersiga qarab (masalan, 60 yoki 120)
 
 # --- Klaviatura kombinatsiyalari ---
 # F11 bosilganda Fullscreen qilish (Huddi Alacritty kabi)

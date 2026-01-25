@@ -1,73 +1,70 @@
 return {
-	-- 1. Birinchi navbatda nvim-nio ni mustaqil plagin sifatida e'lon qilamiz
-	{ "nvim-neotest/nvim-nio" },
-
-	-- 2. Asosiy DAP konfiguratsiyasi
 	{
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
-			"williamboman/mason.nvim",
-			"jay-babu/mason-nvim-dap.nvim",
-			"nvim-neotest/nvim-nio", -- Shunda ham bu yerda qolsin
+			"nvim-neotest/nvim-nio",
+			"mxsdev/nvim-dap-vscode-js",
 		},
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
 
-			-- Mason-dap sozlamalari
-			require("mason-nvim-dap").setup({
-				ensure_installed = { "js-debug-adapter" },
-				automatic_installation = true,
-			})
-
-			-- UI ni sozlash
 			dapui.setup()
 
-			-- Windows uchun adapter yo'lini to'g'irlash
-			-- Mason js-debug-adapter'ni quyidagi papkaga o'rnatadi
-			local adapter_path = vim.fn.stdpath("data")
-				.. "/mason/packages/js-debug-adapter/extension/dist/src/vsDebugServer.js"
+			-- 1. OS va Yo'llarni aniqlash
+			local is_windows = vim.loop.os_uname().version:find("Windows")
+			local home = is_windows and os.getenv("USERPROFILE") or os.getenv("HOME")
+			local debugger_path = home .. "/.local/share/nvim/vscode-js-debug"
 
+			-- 2. Adapterlar (Node.js va PHP)
 			dap.adapters["pwa-node"] = {
 				type = "server",
 				host = "localhost",
 				port = "${port}",
 				executable = {
 					command = "node",
-					args = { adapter_path, "${port}" },
+					args = { debugger_path .. "/dist/src/vsDebugServer.js", "${port}" },
 				},
 			}
 
-			-- NestJS va NextJS tillari uchun konfiguratsiya
-			local js_languages = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+			dap.adapters.php = {
+				type = "executable",
+				command = "node",
+				args = { home .. "/.local/share/nvim/vscode-php-debug/out/phpDebug.js" },
+			}
 
-			for _, lang in ipairs(js_languages) do
-				dap.configurations[lang] = {
-					{
-						type = "pwa-node",
-						request = "launch",
-						name = "NestJS: Debug (NPM Start:Debug)",
-						runtimeExecutable = "npm",
-						runtimeArgs = { "run", "start:debug" },
-						rootPath = "${workspaceFolder}",
-						sourceMaps = true,
-						console = "integratedTerminal",
-					},
-					{
-						type = "pwa-node",
-						request = "launch",
-						name = "NextJS: Debug (NPM Dev)",
-						runtimeExecutable = "npm",
-						runtimeArgs = { "run", "dev" },
-						rootPath = "${workspaceFolder}",
-						sourceMaps = true,
-						console = "integratedTerminal",
-					},
-				}
-			end
+			-- 3. NestJS / NextJS Konfiguratsiyasi
+			local node_config = {
+				{
+					type = "pwa-node",
+					request = "attach",
+					name = "NestJS: Attach to 9229",
+					address = "localhost",
+					port = 9229,
+					cwd = vim.fn.getcwd(),
+					sourceMaps = true,
+					protocol = "inspector",
+					console = "integratedTerminal",
+				},
+			}
+			dap.configurations.typescript = node_config
+			dap.configurations.javascript = node_config
 
-			-- Avtomatik UI amallari
+			-- 4. Laravel (PHP) Konfiguratsiyasi
+			dap.configurations.php = {
+				{
+					type = "php",
+					request = "launch",
+					name = "Listen for Xdebug",
+					port = 9003,
+					pathMappings = {
+						["/var/www/html"] = "${workspaceRoot}",
+					},
+				},
+			}
+
+			-- 5. Avtomatik UI Listenerlar
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				dapui.open()
 			end
@@ -78,13 +75,17 @@ return {
 				dapui.close()
 			end
 
-			-- Keymaps
-			vim.keymap.set("n", "<F5>", function()
-				dap.continue()
-			end)
-			vim.keymap.set("n", "<leader>b", function()
-				dap.toggle_breakpoint()
-			end)
+			-- 6. Keymaplar
+			local keymap = vim.keymap.set
+			keymap("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
+			keymap("n", "<F10>", dap.step_over, { desc = "Debug: Step Over" })
+			keymap("n", "<F11>", dap.step_into, { desc = "Debug: Step Into" })
+			keymap("n", "<F12>", dap.step_out, { desc = "Debug: Step Out" })
+			keymap("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
+			keymap("n", "<leader>B", function()
+				dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+			end, { desc = "Debug: Set Conditional Breakpoint" })
+			keymap("n", "<leader>du", dapui.toggle, { desc = "Debug: Toggle UI" })
 		end,
 	},
 }

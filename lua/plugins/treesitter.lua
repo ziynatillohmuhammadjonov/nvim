@@ -8,17 +8,27 @@ return {
 		config = function()
 			local install = require("nvim-treesitter.install")
 
-			-- Windows va Linux (WSL) uchun umumiy sozlama
-			if vim.loop.os_uname().sysname == "Windows_NT" then
+			local sysname = vim.loop.os_uname().sysname
+
+			if sysname == "Windows_NT" then
 				vim.env.CC = "gcc"
 				vim.env.CXX = "g++"
 				install.prefer_git = false
 				install.compilers = { "gcc" }
-			else
-				-- Linux (Ubuntu/WSL) uchun:
-				-- Tizimdagi nosoz tree-sitter-cli ni chetlab o'tamiz
+			elseif sysname == "Linux" then
+				-- WSL/Linuxda Windows CLI dasturlarini mutlaqo chetlab o'tish
 				install.prefer_git = true
-				install.compilers = { "gcc", "clang" }
+				install.compilers = { "gcc" }
+
+				-- MUHIM: Agar PATHda Windowsning tree-sitter dasturi bo'lsa,
+				-- uni ishlatmaslikni buyuramiz
+				install.command_extra_args = {
+					curl = { "--silent", "--fail" },
+				}
+
+				-- Agar tizimda tree-sitter CLI bo'lsa ham, uni ishlatishni taqiqlash
+				-- Bu orqali Neovim faqat kompilyatorning o'zidan foydalanadi
+				vim.g.tree_sitter_cli_path = ""
 			end
 
 			require("nvim-treesitter").setup({

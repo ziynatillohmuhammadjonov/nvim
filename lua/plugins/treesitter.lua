@@ -8,11 +8,17 @@ return {
 		config = function()
 			local install = require("nvim-treesitter.install")
 
+			-- Windows va Linux (WSL) uchun umumiy sozlama
 			if vim.loop.os_uname().sysname == "Windows_NT" then
 				vim.env.CC = "gcc"
 				vim.env.CXX = "g++"
 				install.prefer_git = false
 				install.compilers = { "gcc" }
+			else
+				-- Linux (Ubuntu/WSL) uchun:
+				-- Tizimdagi nosoz tree-sitter-cli ni chetlab o'tamiz
+				install.prefer_git = true
+				install.compilers = { "gcc", "clang" }
 			end
 
 			require("nvim-treesitter").setup({

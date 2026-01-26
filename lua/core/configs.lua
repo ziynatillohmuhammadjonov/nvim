@@ -83,18 +83,26 @@ vim.diagnostic.config({
 -- Loyiha papkasiga avtomatik o'tish (Rooter mantiqi)
 vim.api.nvim_create_autocmd("BufEnter", {
 	callback = function()
-		local path = vim.fn.expand("%:p:h")
-		if path:match("node_modules") or path:match(".git") then
+		local path = vim.api.nvim_buf_get_name(0)
+		if path == "" or path:match("node_modules") then
 			return
 		end
-		-- Agar loyihada .git yoki package.json bo'lsa, o'sha yerga o'tadi
-		local root = vim.fs.find({ ".git", "package.json", "composer.json" }, { upward = true, path = path })[1]
-		if root then
-			vim.fn.chdir(vim.fn.fnamemodify(root, ":h"))
+
+		-- Root fayllarni qidirish
+		local root_file = vim.fs.find({ ".git", "package.json", "composer.json" }, {
+			upward = true,
+			path = vim.fs.dirname(path),
+		})[1]
+
+		if root_file then
+			local root_dir = vim.fs.dirname(root_file)
+			-- Faqat hozirgi katalogdan farq qilsa o'zgartiramiz
+			if root_dir ~= vim.fn.getcwd() then
+				vim.fn.chdir(root_dir)
+			end
 		end
 	end,
 })
-
 vim.opt.updatetime = 100 -- Kontekstni tezroq aniqlash uchun
 
 -- Kodni yig'ish (Folding) sozlamalari
@@ -115,9 +123,9 @@ vim.api.nvim_create_autocmd("VimLeave", {
 		if vim.fn.has("win32") == 1 then
 			os.execute("taskkill /f /im node.exe /t")
 		end
+		-- Linux uchun shart emas, chunki WSL terminal yopilganda processlarni o'zi tozalaydi
 	end,
 })
-
 -- Set the background of the main editor and floating windows to none (transparent)
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 vim.cmd("highlight NonText guibg=NONE ctermbg=NONE")

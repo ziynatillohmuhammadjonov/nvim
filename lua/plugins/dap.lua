@@ -86,6 +86,20 @@ return {
 				dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 			end, { desc = "Debug: Set Conditional Breakpoint" })
 			keymap("n", "<leader>du", dapui.toggle, { desc = "Debug: Toggle UI" })
+			-- 1. Logpoint qo'yish
+			keymap("n", "<leader>dl", function()
+				dap.set_breakpoint(nil, nil, vim.fn.input("Log xabari: "))
+			end, { desc = "Debug: Logpoint qo'yish" })
+
+			-- 2. Faqat loglarni (REPL) suzuvchi oynada ochish (Siz so'ragan leader dr)
+			keymap("n", "<leader>dr", function()
+				dapui.float_element("repl", { width = 100, height = 20, enter = true })
+			end, { desc = "Debug: Faqat Loglarni ko'rish" })
+
+			-- 3. Kursor turgan o'zgaruvchi qiymatini ko'rish (Siz so'ragan kursor kelganda ochilish)
+			keymap("n", "<leader>di", function()
+				dapui.eval() -- Bu kursor ostidagi o'zgaruvchini kichik oynada ko'rsatadi
+			end, { desc = "Debug: Kursor ostidagi o'zgaruvchi" })
 		end,
 	},
 }

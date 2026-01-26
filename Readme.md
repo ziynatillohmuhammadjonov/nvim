@@ -1,4 +1,4 @@
-Macos linux terminal setup 
+
 Recomenndet terminal - ghostty
 setting .config/ghostty/config
 
@@ -111,3 +111,10 @@ action = "ToggleFullscreen"
 # Windowsda standart terminal sifatida Git Bashni tanlash (Manzilni tekshiring)
 # program = "C:\\Program Files\\Git\\bin\\bash.exe"
 # args = ["--login", "-i"]
+
+# Agar windowsda subsystem qilib linux ishlatilsa unda ishlash tavsiya etiladi.
+<!-- [terminal.shell] -->
+<!-- program = "wsl.exe" -->
+# -u dan keyin faqat user nomi: ziynatilloh
+# --cd dan keyin Linuxdagi to'liq yo'l: /home/ziynatilloh/projects
+<!-- args = ["-d", "Ubuntu", "-u", "ziynatilloh", "--cd", "/home/ziynatilloh/projects"] -->

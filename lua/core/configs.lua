@@ -80,29 +80,42 @@ vim.diagnostic.config({
 	severity_sort = true,
 })
 
--- Loyiha papkasiga avtomatik o'tish (Rooter mantiqi)
+-- Loyiha papkasiga avtomatik o'tish (To'g'rilangan variant)
 vim.api.nvim_create_autocmd("BufEnter", {
 	callback = function()
 		local path = vim.api.nvim_buf_get_name(0)
-		if path == "" or path:match("node_modules") then
+
+		-- Bo'sh fayllar, temporary fayllar yoki node_modules bo'lsa ishlamaslik
+		if path == "" or path:match("node_modules") or path:match("term://") then
 			return
 		end
 
-		-- Root fayllarni qidirish
-		local root_file = vim.fs.find({ ".git", "package.json", "composer.json" }, {
+		-- Loyiha ildizini aniqlovchi fayllar
+		local root_patterns = { ".git", "package.json", "composer.json", "nx.json", "turbo.json" }
+
+		local root_file = vim.fs.find(root_patterns, {
 			upward = true,
 			path = vim.fs.dirname(path),
 		})[1]
 
 		if root_file then
 			local root_dir = vim.fs.dirname(root_file)
-			-- Faqat hozirgi katalogdan farq qilsa o'zgartiramiz
+
+			-- Windowsda D:/ kabi rootga chiqib ketmasligini tekshirish
+			-- Agar root_dir faqat disk nomi bo'lib qolsa (masalan "D:/"), o'tmaymiz
+			if root_dir:len() <= 3 and vim.fn.has("win32") == 1 then
+				return
+			end
+
 			if root_dir ~= vim.fn.getcwd() then
 				vim.fn.chdir(root_dir)
+				-- Qayerga o'tganini bildirish (ixtiyoriy)
+				-- print("Root changed to: " .. root_dir)
 			end
 		end
 	end,
 })
+
 vim.opt.updatetime = 100 -- Kontekstni tezroq aniqlash uchun
 
 -- Kodni yig'ish (Folding) sozlamalari

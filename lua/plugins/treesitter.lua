@@ -43,8 +43,50 @@ return {
 					additional_vim_regex_highlighting = false,
 				},
 				indent = { enable = true },
-			})
 
+				------------------------------------------------
+				-- 🧠 Incremental Selection
+				------------------------------------------------
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = "gnn",
+						node_incremental = "grn",
+						node_decremental = "grm",
+						scope_incremental = "grc",
+					},
+				},
+				textobjects = {
+					select = {
+						enable = true,
+						lookahead = true, -- Avtomatik ravishda keyingi obyekni qidiradi
+						keymaps = {
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
+						},
+					},
+					move = {
+						enable = true,
+						set_jumps = true, -- Jump listga qo'shadi (Ctrl+o bilan qaytsa bo'ladi)
+						goto_next_start = {
+							["]m"] = "@function.outer",
+						},
+						goto_previous_start = {
+							["[m"] = "@function.outer",
+						},
+					},
+				},
+			})
+			-- 3. Folding va Filetype Mapping (Setupdan tashqarida bo'lishi mumkin)
+			vim.opt.foldmethod = "expr"
+			vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+			vim.opt.foldlevel = 99
+
+			vim.filetype.add({
+				extension = { ["blade.php"] = "php" },
+			})
 			-- Blade fayllarini Treesitter orqali tanitish
 			-- Blade parseri ko'pincha PHP va HTML parserlariga tayanadi
 			vim.api.nvim_create_autocmd({ "FileType" }, {
@@ -63,6 +105,7 @@ return {
 			})
 		end,
 	},
+
 	-- 2. Sticky Scroll (Context) plagini
 	{
 		"nvim-treesitter/nvim-treesitter-context",

@@ -28,7 +28,7 @@ return {
 					"tailwindcss-language-server",
 					"emmet-ls",
 					"eslint-lsp",
-          "json-lsp",
+					"json-lsp",
 
 					-- Formatters
 					"stylua",
@@ -37,6 +37,11 @@ return {
 					--					"pint",
 					"blade-formatter",
 					"eslint_d",
+
+					-- PHP asboblarini shu yerga qo'shing:
+					"phpstan", -- Sizdagi xatolikni yo'qotadi
+					-- "php-debug", -- XDebug uchun (kerak bo'lsa)
+					-- "pint",
 				},
 			})
 

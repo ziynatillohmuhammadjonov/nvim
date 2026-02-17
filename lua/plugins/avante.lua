@@ -1,16 +1,19 @@
 return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
-	lazy = false,
+	-- lazy = false,
 	version = false,
 	opts = {
-		provider = "gemini", -- Asosiy provayder sifatida gemini tanlangan
+		-- provider = "gemini", -- Asosiy provayder sifatida gemini tanlangan
+		provider = "openai",
 		-- Yangi struktura:
 		providers = {
 			gemini = {
-				endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
-				model = "gemini-2.5-flash", -- Bepul versiyada eng barqaror model
-				max_tokens = 4096,
+				-- endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
+				-- model = "gemini-2.5-flash", -- Bepul versiyada eng barqaror model
+				endpoint = "https://api.openai.com/v1",
+				model = "gpt-5-mini", -- tez va arzon
+				max_tokens = 1024,
 				temperature = 0,
 			},
 		},

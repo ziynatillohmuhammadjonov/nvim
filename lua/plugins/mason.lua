@@ -34,7 +34,7 @@ return {
 					"stylua",
 					"prettierd",
 					"prettier",
-					--					"pint",
+					"pint",
 					"blade-formatter",
 					"eslint_d",
 

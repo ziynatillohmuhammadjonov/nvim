@@ -107,6 +107,16 @@ TERM = "xterm-256color"
 key = "F11"
 action = "ToggleFullscreen"
 
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
 # [terminal.shell]
 # Windowsda standart terminal sifatida Git Bashni tanlash (Manzilni tekshiring)
 # program = "C:\\Program Files\\Git\\bin\\bash.exe"

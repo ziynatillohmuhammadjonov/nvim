@@ -128,3 +128,310 @@ Sessiyani tiklash (Manual),Prefix + Ctrl + r
 Sessiyalar ro'yxati,Prefix + s
 Oynani qayta nomlash,"Prefix + ,"
 Konfiguratsiyani yangilash,Prefix + r   Hammasi tayyor! Gruvbox mavzusi va barcha funksiyalar ishga tushishi kerak.
+
+
+# 🚀 TMUX Cheat Sheet (Full Guide)
+
+## 🧠 Asosiy tushuncha
+
+* **Session** → project (api, web, worker)
+* **Window** → tab
+* **Pane** → split (bo‘lingan oynalar)
+
+---
+
+## ⌨️ PREFIX
+
+```
+Ctrl + a
+```
+
+👉 Barcha komandalar shu bilan boshlanadi
+
+---
+
+# 📦 SESSION (sessiyalar)
+
+## 🔹 Yangi sessiya
+
+```
+tmux new -s session_name
+```
+
+## 🔹 Smart open (recommended)
+
+```
+tmux new -A -s session_name
+```
+
+## 🔹 Sessiyaga ulanish
+
+```
+tmux attach -t session_name
+```
+
+## 🔹 Sessiyalar ro‘yxati
+
+```
+tmux ls
+```
+
+## 🔹 Sessiyani o‘chirish
+
+```
+tmux kill-session -t session_name
+```
+
+## 🔹 Sessiya rename
+
+### Ichida:
+
+```
+Prefix + $
+```
+
+### Command:
+
+```
+tmux rename-session yangi_nomi
+```
+
+---
+
+# 🪟 WINDOW (tablar)
+
+## 🔹 Yangi window
+
+```
+Prefix + c
+```
+
+## 🔹 Keyingi window
+
+```
+Prefix + n
+```
+
+## 🔹 Oldingi window
+
+```
+Prefix + p
+```
+
+## 🔹 Window rename
+
+```
+Prefix + ,
+```
+
+## 🔹 Windowni joyini o‘zgartirish
+
+```
+Prefix + .
+```
+
+👉 keyin index (1,2,3...)
+
+---
+
+# 🧩 PANE (split oynalar)
+
+## 🔹 Split
+
+### Vertikal:
+
+```
+Prefix + |
+```
+
+### Gorizontal:
+
+```
+Prefix + -
+```
+
+---
+
+## 🔹 Pane o‘rtasida yurish
+
+```
+Ctrl + h
+Ctrl + j
+Ctrl + k
+Ctrl + l
+```
+
+---
+
+## 🔹 Pane resize
+
+```
+Prefix + h  → chapga
+Prefix + j  → pastga
+Prefix + k  → yuqoriga
+Prefix + l  → o‘ngga
+```
+
+---
+
+## 🔹 Pane swap (joyini almashtirish)
+
+```
+Prefix + {
+Prefix + }
+```
+
+---
+
+## 🔹 Layoutni o‘zgartirish
+
+```
+Prefix + Space
+```
+
+---
+
+# 📋 COPY MODE (vim style)
+
+## 🔹 Kirish
+
+```
+Prefix + [
+```
+
+## 🔹 Ishlatish
+
+```
+v → select
+y → copy
+```
+
+---
+
+# 💾 SESSION SAVE / RESTORE
+
+## 🔹 Saqlash
+
+```
+Prefix + Ctrl + s
+```
+
+## 🔹 Tiklash
+
+```
+Prefix + Ctrl + r
+```
+
+---
+
+# ⚙️ CONFIG
+
+## 🔹 Reload config
+
+```
+Prefix + r
+```
+
+---
+
+# 📚 SESSION MANAGER
+
+## 🔹 Sessiyalar ro‘yxati (interactive)
+
+```
+Prefix + s
+```
+
+---
+
+# 🔌 DETACH / EXIT
+
+## 🔹 Sessiyadan chiqish (backgroundda qoldirish)
+
+```
+Prefix + d
+```
+
+---
+
+# 🔥 REAL WORKFLOW (RECOMMENDED)
+
+## Backend
+
+```
+tmux new -A -s api
+```
+
+## Frontend
+
+```
+tmux new -A -s web
+```
+
+## Worker
+
+```
+tmux new -A -s worker
+```
+
+---
+
+# ⚡ PRO TIPS
+
+## 🔹 Naming convention
+
+```
+api
+web
+worker
+infra
+```
+
+## 🔹 Layout reset
+
+```
+Prefix + Space
+```
+
+## 🔹 Full dev setup (script)
+
+```
+tmux new -d -s project
+tmux send-keys -t project "npm run dev" C-m
+tmux split-window -h
+tmux send-keys "php artisan serve" C-m
+tmux attach -t project
+```
+
+---
+
+# 🧠 MINI CHEAT SHEET
+
+```
+Prefix = Ctrl + a
+
+c → new window
+| → split vertical
+- → split horizontal
+h/j/k/l → resize
+{ } → swap pane
+Space → layout
+, → rename window
+$ → rename session
+s → session list
+d → detach
+[ → copy mode
+r → reload config
+```
+
+---
+
+# 🚀 Xulosa
+
+Tmux bilan:
+
+* bitta terminal = full dev environment
+* SSH uzilsa ham ish davom etadi
+* multi-tasking maksimal darajada
+
+👉 Bu setup bilan sen allaqachon **advanced developer workflow**dasen 😎

@@ -55,7 +55,7 @@ return {
 		local os_name = vim.loop.os_uname().sysname
 
 		-- MacOS uchun 'zsh', Windows uchun 'powershell.exe'
-		local default_shell = os_name == "Windows_NT" and "powershell.exe" or "zsh"
+		local default_shell = os_name == "Windows_NT" and "powershell.exe" or "bash"
 
 		tt.setup({
 			size = 15,
@@ -80,8 +80,8 @@ return {
 		else
 			-- Linux/MacOS uchun eski holicha qoladi
 			shell_list = {
-				{ name = "Zsh", cmd = "zsh", args = { "--login" } },
 				{ name = "Bash", cmd = "bash", args = {} },
+				{ name = "Zsh", cmd = "zsh", args = { "--login" } },
 			}
 		end
 
